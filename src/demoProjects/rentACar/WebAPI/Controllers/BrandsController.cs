@@ -34,5 +34,12 @@ namespace WebAPI.Controllers
            BrandGetByIdDto brandGetByIdDto = await Mediator.Send(getByIdIdBrandQuery);
            return Ok(brandGetByIdDto);
         }
+        [HttpPost("BulkInsert")]
+        public async Task<IActionResult> BulkInsert([FromBody] CreateBulkBrandCommand bulkBrandCommand)
+        {
+            List<CreatedBrandDto> result = await Mediator.Send(bulkBrandCommand);
+            return Created("", result);
+
+        }
     }
 }

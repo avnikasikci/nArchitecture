@@ -65,6 +65,13 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
+    public async Task<List<TEntity>> AddRangeAsync(List<TEntity> entity)
+    {
+        Context.AddRangeAsync(entity);
+        await Context.SaveChangesAsync();
+        return entity;
+    }
+
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         Context.Entry(entity).State = EntityState.Modified;
@@ -72,7 +79,21 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
+    public async Task<List<TEntity>> UpdateRangeAsync(List<TEntity> entity)
+    {
+        Context.Entry(entity).State = EntityState.Modified;
+        await Context.SaveChangesAsync();
+        return entity;
+    }
+
     public async Task<TEntity> DeleteAsync(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Deleted;
+        await Context.SaveChangesAsync();
+        return entity;
+    }
+
+    public async Task<List<TEntity>> DeleteRangeAsync(List<TEntity> entity)
     {
         Context.Entry(entity).State = EntityState.Deleted;
         await Context.SaveChangesAsync();
@@ -117,6 +138,13 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
+    public List<TEntity> AddRange(List<TEntity> entity)
+    {
+        Context.AddRange(entity);
+        Context.SaveChanges();
+        return entity;
+    }
+
     public TEntity Update(TEntity entity)
     {
         Context.Entry(entity).State = EntityState.Modified;
@@ -124,9 +152,22 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
+    public List<TEntity> UpdateRange(List<TEntity> entity)
+    {
+        Context.UpdateRange(entity);
+        Context.SaveChanges();
+        return entity;
+    }
+
     public TEntity Delete(TEntity entity)
     {
         Context.Entry(entity).State = EntityState.Deleted;
+        Context.SaveChanges();
+        return entity;
+    }
+    public List<TEntity> DeleteRange(List<TEntity> entity)
+    {
+        Context.RemoveRange(entity);
         Context.SaveChanges();
         return entity;
     }
